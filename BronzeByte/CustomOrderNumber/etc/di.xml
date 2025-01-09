@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Quote\Model\ResourceModel\Quote">
+        <plugin name="BronzeByte_CustomOrderNumber::manipulateReservedOrderId" type="BronzeByte\CustomOrderNumber\Plugin\Model\Quote\ResourceModel\QuotePlugin"/>
+    </type>
+    <type name="BronzeByte\CustomOrderNumber\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="BronzeByte\CustomOrderNumber\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">magesalesLogger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">BronzeByte\CustomOrderNumber\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

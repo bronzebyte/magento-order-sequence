@@ -1,0 +1,433 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <!-- for add new tab in Magento2 system configuration section -->
+        <tab id="bronze_byte" translate="label" sortOrder="10">
+             <label>BronzeByte</label>
+        </tab>
+        <!-- for create section -->
+        <section id="custom_order_number" translate="label" type="text" sortOrder="320" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Custom Order Number</label>
+            <!-- Assign section to tab -->
+            <tab>bronze_byte</tab>
+            <resource>BronzeByte_CustomOrderNumber::configuration</resource>
+          <group id="general" translate="label" showInDefault="1" showInWebsite="0" showInStore="0" sortOrder="10">
+                <label>General Configuration</label>
+                <field id="enabled" translate="label" type="select" sortOrder="40" showInDefault="1">
+                    <label>Module Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+              <group id="order" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="20">
+                <label>Order # Configuration</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Custom Order Number</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Can be enabled/disabled per website/store view. <strong>Make sure to enable this if you want to use any of the below configuration/features.</strong>]]></comment>
+                </field>
+                <field id="id_format" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order Number Format</label>
+                    <comment><![CDATA[
+                    <strong>Sample formats:</strong><br/>
+                    ORD%counter% (if %counter% is 10043 this outputs ORD10043)<br/>
+                    O-%YYYY%-%counter% (if %counter% is 1001 and year is 2014 this outputs O-2014-1001)<br/><br/>
+                    <strong>Important note:</strong><br/>
+                    Always make sure your order numbers are unique somehow. It is recommended to at least use the %counter% variable in the order number to avoid duplicate order numbers, as this variable is unique and incrementing.<br/><br/>
+                    <strong>The following variables can be used:</strong><br/>
+                    %d% (day of the month, no leading 0)<br/>
+                    %dd% (day of the month, 2 digits always)<br/>
+                    %m% (month of the year, no leading 0)<br/>
+                    %mm% (month of the year, 2 digits always)<br/>
+                    %yy% (current year, 2 digits)<br/>
+                    %yyyy% (current year, 4 digits)<br/>
+                    %h% (current time: hour, no leading 0)<br/>
+                    %hh% (current time: hour, 2 digits always)<br/>
+                    %ii% (current time: minute, 2 digits always)<br/>
+                    %ss% (current time: seconds, 2 digits always)<br/>
+                    %store_id% (Store ID the order was placed in)<br/>
+                    %counter% (An incrementing number, configuration below)<br/>
+                    %rand3% (Random number between 100 and 999)<br/>
+                    %rand4% (Random number between 1000 and 9999)<br/>
+                    %rand5% (Random number between 10000 and 99999)<br/>
+                    %rand6% (Random number between 100000 and 999999)<br/>
+                    %rand7% (Random number between 1000000 and 9999999)<br/>
+                    %rand8% (Random number between 10000000 and 99999999)<br/>
+                    %rand9% (Random number between 100000000 and 999999999)
+                    ]]></comment>
+                </field>
+                <field id="count_from" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Start counting from</label>
+                    <comment><![CDATA[This is the %counter% variable that can be used in the custom order number format field above. This configures from which number the %counter% variable begins counting. If you use "Reset counter", the %counter% variable will start from the value entered here after being reset.]]></comment>
+                </field>
+                <field id="unique_per_website" translate="label comment" type="select" sortOrder="40" showInDefault="0" showInWebsite="1" showInStore="0">
+                    <label>Counter: Unique per website</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[This website should have its own counter.]]></comment>
+                </field>
+                <field id="unique_per_store" translate="label comment" type="select" sortOrder="50" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <label>Counter: Unique per store view</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[This store view should have its own counter.]]></comment>
+                </field>
+                <field id="increment_by" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Increment by</label>
+                    <comment><![CDATA[If set to 1, the %counter% variable increases by 1 for every new order placed. If set to 7, the %counter% variable increases by 7 for every new order placed.]]></comment>
+                </field>
+                <field id="padding" translate="label comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Number Padding</label>
+                    <comment><![CDATA[If you want the %counter% variable to be 6 digits long with zeros at the beginning of the counter, enter 6 in this field. For example if the counter is at 12, it would output 000012 then, so its always a 6 digit number (6 is the padding).]]></comment>
+                </field>
+                <field id="reset_counter" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Reset counter automatically</label>
+                    <source_model>BronzeByte\CustomOrderNumber\Model\System\Config\Source\CounterReset</source_model>
+                    <comment><![CDATA[How often should the %counter% variable be reset? Make sure to have dynamic parts (like the date) in the order number format to avoid duplicate order numbers!]]></comment>
+                </field>
+                <field id="force_reset_counter" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Force counter reset now</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[If set to "Yes", the %counter% variable will be reset when the next increment ID is generated and will then deactivate this option automatically. This means the %counter% variable is just reset for the next increment ID.]]></comment>
+                </field>
+            </group>
+
+             <group id="invoice" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="30">
+                <label>Invoice # Configuration</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Custom Invoice Number</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Can be enabled/disabled per website/store view. <strong>Make sure to enable this if you want to use any of the below configuration/features.</strong>]]></comment>
+                </field>
+                <field id="same_as_order" translate="label comment" type="select" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Same as order number</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[If enabled, the invoice number will use the order number the invoice belongs to, which means the invoice number is the same as the order number.]]></comment>
+                </field>
+                <field id="id_prefix" translate="label comment" type="text" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Invoice Prefix</label>
+                    <comment><![CDATA[The prefix entered here will be added in front of the invoice ID. If the order number is 2014-1245, and you enter INV- as the prefix, the invoice ID will be INV-2014-1245]]></comment>
+                    <depends>
+                        <field id="same_as_order">1</field>
+                    </depends>
+                </field>
+                <field id="replace_in_id" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Replace in order number</label>
+                    <comment><![CDATA[If you want to replace something in the order number (which will be used as the invoice number), you can enter it here. If your order number is ORD-1234 you can enter ORD- here and ORD- would then be replaced when used as the invoice number.]]></comment>
+                    <depends>
+                        <field id="same_as_order">1</field>
+                    </depends>
+                </field>
+                <field id="id_format" translate="label comment" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Invoice Number Format</label>
+                    <comment><![CDATA[
+                    <strong>Sample formats:</strong><br/>
+                    INV%counter% (if %counter% is 10043 this outputs INV10043)<br/>
+                    I-%YYYY%-%counter% (if %counter% is 1001 and year is 2014 this outputs I-2014-1001)<br/><br/>
+                    <strong>Important note:</strong><br/>
+                    Always make sure your invoice numbers are unique somehow. It is recommended to at least use the %counter% variable in the invoice number to avoid duplicate invoice numbers, as this variable is unique and incrementing.<br/><br/>
+                    <strong>The following variables can be used:</strong><br/>
+                    %d% (day of the month, no leading 0)<br/>
+                    %dd% (day of the month, 2 digits always)<br/>
+                    %m% (month of the year, no leading 0)<br/>
+                    %mm% (month of the year, 2 digits always)<br/>
+                    %yy% (current year, 2 digits)<br/>
+                    %yyyy% (current year, 4 digits)<br/>
+                    %h% (current time: hour, no leading 0)<br/>
+                    %hh% (current time: hour, 2 digits always)<br/>
+                    %ii% (current time: minute, 2 digits always)<br/>
+                    %ss% (current time: seconds, 2 digits always)<br/>
+                    %store_id% (Store ID the order was placed in)<br/>
+                    %counter% (An incrementing number, configuration below)<br/>
+                    %rand3% (Random number between 100 and 999)<br/>
+                    %rand4% (Random number between 1000 and 9999)<br/>
+                    %rand5% (Random number between 10000 and 99999)<br/>
+                    %rand6% (Random number between 100000 and 999999)<br/>
+                    %rand7% (Random number between 1000000 and 9999999)<br/>
+                    %rand8% (Random number between 10000000 and 99999999)<br/>
+                    %rand9% (Random number between 100000000 and 999999999)
+                    ]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="count_from" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Start counting from</label>
+                    <comment><![CDATA[This is the %counter% variable that can be used in the custom invoice number format field above. This configures from which number the %counter% variable begins counting. If you use "Reset counter", the %counter% variable will start from the value entered here after being reset.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="unique_per_website" translate="label comment" type="select" sortOrder="40" showInDefault="0" showInWebsite="1" showInStore="0">
+                    <label>Counter: Unique per website</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[This website should have its own counter.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="unique_per_store" translate="label comment" type="select" sortOrder="50" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <label>Counter: Unique per store view</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[This store view should have its own counter.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="increment_by" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Increment by</label>
+                    <comment><![CDATA[If set to 1, the %counter% variable increases by 1 for every new invoice created. If set to 7, the %counter% variable increases by 7 for every new invoice created.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="padding" translate="label comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Number Padding</label>
+                    <comment><![CDATA[If you want the %counter% variable to be 6 digits long with zeros at the beginning of the counter, enter 6 in this field. For example if the counter is at 12, it would output 000012 then, so its always a 6 digit number (6 is the padding).]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="reset_counter" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Reset counter automatically</label>
+                    <source_model>BronzeByte\CustomOrderNumber\Model\System\Config\Source\CounterReset</source_model>
+                    <comment><![CDATA[How often should the %counter% variable be reset? Make sure to have dynamic parts (like the date) in the invoice number format to avoid duplicate invoice numbers!]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="force_reset_counter" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Force counter reset now</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[If set to "Yes", the %counter% variable will be reset when the next increment ID is generated and will then deactivate this option automatically. This means the %counter% variable is just reset for the next increment ID.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="shipment" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="40">
+                <label>Shipment # Configuration</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Custom Shipment Number</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Can be enabled/disabled per website/store view. <strong>Make sure to enable this if you want to use any of the below configuration/features.</strong>]]></comment>
+                </field>
+                <field id="same_as_order" translate="label comment" type="select" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Same as order number</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[If enabled, the shipment number will use the order number the shipment belongs to, which means the shipment number is the same as the order number.]]></comment>
+                </field>
+                <field id="id_prefix" translate="label comment" type="text" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Shipment Prefix</label>
+                    <comment><![CDATA[The prefix entered here will be added in front of the shipment ID. If the order number is 2014-1245, and you enter SHI- as the prefix, the shipment ID will be SHI-2014-1245]]></comment>
+                    <depends>
+                        <field id="same_as_order">1</field>
+                    </depends>
+                </field>
+                <field id="replace_in_id" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Replace in order number</label>
+                    <comment><![CDATA[If you want to replace something in the order number (which will be used as the shipment number), you can enter it here. If your order number is ORD-1234 you can enter ORD- here and ORD- would then be replaced when used as the shipment number.]]></comment>
+                    <depends>
+                        <field id="same_as_order">1</field>
+                    </depends>
+                </field>
+                <field id="id_format" translate="label comment" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Shipment Number Format</label>
+                    <comment><![CDATA[
+                    <strong>Sample formats:</strong><br/>
+                    SHI%counter% (if %counter% is 10043 this outputs SHI10043)<br/>
+                    S-%YYYY%-%counter% (if %counter% is 1001 and year is 2014 this outputs S-2014-1001)<br/><br/>
+                    <strong>Important note:</strong><br/>
+                    Always make sure your shipment numbers are unique somehow. It is recommended to at least use the %counter% variable in the shipment number to avoid duplicate shipment numbers, as this variable is unique and incrementing.<br/><br/>
+                    <strong>The following variables can be used:</strong><br/>
+                    %d% (day of the month, no leading 0)<br/>
+                    %dd% (day of the month, 2 digits always)<br/>
+                    %m% (month of the year, no leading 0)<br/>
+                    %mm% (month of the year, 2 digits always)<br/>
+                    %yy% (current year, 2 digits)<br/>
+                    %yyyy% (current year, 4 digits)<br/>
+                    %h% (current time: hour, no leading 0)<br/>
+                    %hh% (current time: hour, 2 digits always)<br/>
+                    %ii% (current time: minute, 2 digits always)<br/>
+                    %ss% (current time: seconds, 2 digits always)<br/>
+                    %store_id% (Store ID the order was placed in)<br/>
+                    %counter% (An incrementing number, configuration below)<br/>
+                    %rand3% (Random number between 100 and 999)<br/>
+                    %rand4% (Random number between 1000 and 9999)<br/>
+                    %rand5% (Random number between 10000 and 99999)<br/>
+                    %rand6% (Random number between 100000 and 999999)<br/>
+                    %rand7% (Random number between 1000000 and 9999999)<br/>
+                    %rand8% (Random number between 10000000 and 99999999)<br/>
+                    %rand9% (Random number between 100000000 and 999999999)
+                    ]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="count_from" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Start counting from</label>
+                    <comment><![CDATA[This is the %counter% variable that can be used in the custom shipment number format field above. This configures from which number the %counter% variable begins counting. If you use "Reset counter", the %counter% variable will start from the value entered here after being reset.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="unique_per_website" translate="label comment" type="select" sortOrder="40" showInDefault="0" showInWebsite="1" showInStore="0">
+                    <label>Counter: Unique per website</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[This website should have its own counter.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="unique_per_store" translate="label comment" type="select" sortOrder="50" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <label>Counter: Unique per store view</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[This store view should have its own counter.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="increment_by" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Increment by</label>
+                    <comment><![CDATA[If set to 1, the %counter% variable increases by 1 for every new shipment created. If set to 7, the %counter% variable increases by 7 for every new shipment created.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="padding" translate="label comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Number Padding</label>
+                    <comment><![CDATA[If you want the %counter% variable to be 6 digits long with zeros at the beginning of the counter, enter 6 in this field. For example if the counter is at 12, it would output 000012 then, so its always a 6 digit number (6 is the padding).]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="reset_counter" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Reset counter automatically</label>
+                    <source_model>BronzeByte\CustomOrderNumber\Model\System\Config\Source\CounterReset</source_model>
+                    <comment><![CDATA[How often should the %counter% variable be reset? Make sure to have dynamic parts (like the date) in the shipment number format to avoid duplicate shipment numbers!]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="force_reset_counter" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Force counter reset now</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[If set to "Yes", the %counter% variable will be reset when the next increment ID is generated and will then deactivate this option automatically. This means the %counter% variable is just reset for the next increment ID.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="creditmemo" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="50">
+                <label>CreditMemo # Configuration</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Custom Credit Memo Number</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Can be enabled/disabled per website/store view. <strong>Make sure to enable this if you want to use any of the below configuration/features.</strong>]]></comment>
+                </field>
+                <field id="same_as_order" translate="label comment" type="select" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Same as order number</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[If enabled, the credit memo number will use the order number the credit memo belongs to, which means the credit memo number is the same as the order number.]]></comment>
+                </field>
+                <field id="id_prefix" translate="label comment" type="text" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Credit Memo Prefix</label>
+                    <comment><![CDATA[The prefix entered here will be added in front of the credit memo ID. If the order number is 2014-1245, and you enter CRE- as the prefix, the credit memo ID will be CRE-2014-1245]]></comment>
+                    <depends>
+                        <field id="same_as_order">1</field>
+                    </depends>
+                </field>
+                <field id="replace_in_id" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Replace in order number</label>
+                    <comment><![CDATA[If you want to replace something in the order number (which will be used as the credit memo number), you can enter it here. If your order number is ORD-1234 you can enter ORD- here and ORD- would then be replaced when used as the credit memo number.]]></comment>
+                    <depends>
+                        <field id="same_as_order">1</field>
+                    </depends>
+                </field>
+                <field id="id_format" translate="label comment" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Credit Memo Number Format</label>
+                    <comment><![CDATA[
+                    <strong>Sample formats:</strong><br/>
+                    CRE%counter% (if %counter% is 10043 this outputs CRE10043)<br/>
+                    C-%YYYY%-%counter% (if %counter% is 1001 and year is 2014 this outputs C-2014-1001)<br/><br/>
+                    <strong>Important note:</strong><br/>
+                    Always make sure your credit memo numbers are unique somehow. It is recommended to at least use the %counter% variable in the credit memo number to avoid duplicate credit memo numbers, as this variable is unique and incrementing.<br/><br/>
+                    <strong>The following variables can be used:</strong><br/>
+                    %d% (day of the month, no leading 0)<br/>
+                    %dd% (day of the month, 2 digits always)<br/>
+                    %m% (month of the year, no leading 0)<br/>
+                    %mm% (month of the year, 2 digits always)<br/>
+                    %yy% (current year, 2 digits)<br/>
+                    %yyyy% (current year, 4 digits)<br/>
+                    %h% (current time: hour, no leading 0)<br/>
+                    %hh% (current time: hour, 2 digits always)<br/>
+                    %ii% (current time: minute, 2 digits always)<br/>
+                    %ss% (current time: seconds, 2 digits always)<br/>
+                    %store_id% (Store ID the order was placed in)<br/>
+                    %counter% (An incrementing number, configuration below)<br/>
+                    %rand3% (Random number between 100 and 999)<br/>
+                    %rand4% (Random number between 1000 and 9999)<br/>
+                    %rand5% (Random number between 10000 and 99999)<br/>
+                    %rand6% (Random number between 100000 and 999999)<br/>
+                    %rand7% (Random number between 1000000 and 9999999)<br/>
+                    %rand8% (Random number between 10000000 and 99999999)<br/>
+                    %rand9% (Random number between 100000000 and 999999999)
+                    ]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="count_from" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Start counting from</label>
+                    <comment><![CDATA[This is the %counter% variable that can be used in the custom credit memo number format field above. This configures from which number the %counter% variable begins counting. If you use "Reset counter", the %counter% variable will start from the value entered here after being reset.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="unique_per_website" translate="label comment" type="select" sortOrder="40" showInDefault="0" showInWebsite="1" showInStore="0">
+                    <label>Counter: Unique per website</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[This website should have its own counter.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="unique_per_store" translate="label comment" type="select" sortOrder="50" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <label>Counter: Unique per store view</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[This store view should have its own counter.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="increment_by" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Increment by</label>
+                    <comment><![CDATA[If set to 1, the %counter% variable increases by 1 for every new credit memo created. If set to 7, the %counter% variable increases by 7 for every new credit memo created.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="padding" translate="label comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Number Padding</label>
+                    <comment><![CDATA[If you want the %counter% variable to be 6 digits long with zeros at the beginning of the counter, enter 6 in this field. For example if the counter is at 12, it would output 000012 then, so its always a 6 digit number (6 is the padding).]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="reset_counter" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Reset counter automatically</label>
+                    <source_model>BronzeByte\CustomOrderNumber\Model\System\Config\Source\CounterReset</source_model>
+                    <comment><![CDATA[How often should the %counter% variable be reset? Make sure to have dynamic parts (like the date) in the credit memo number format to avoid duplicate credit memo numbers!]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+                <field id="force_reset_counter" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Counter: Force counter reset now</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[If set to "Yes", the %counter% variable will be reset when the next increment ID is generated and will then deactivate this option automatically. This means the %counter% variable is just reset for the next increment ID.]]></comment>
+                    <depends>
+                        <field id="same_as_order">0</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
